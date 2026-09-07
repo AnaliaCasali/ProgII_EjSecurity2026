@@ -2,10 +2,8 @@ package edu.prog2.ejsecurity.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -33,14 +31,20 @@ public class SecurityConfig {
                         // RESTO: solo usuarios logueados
                         .anyRequest().authenticated()
                 )
+                //se habilita HTTP Basic usando la configuración predeterminada
+                // de Spring Security
                 .httpBasic(Customizer.withDefaults());
         return http.build();
     }
 
     /// super temporal - creamos usuarios en memoria
-
     @Bean
     UserDetailsService userDetailsService(PasswordEncoder encoder) {
+        //Builder es un patrón de creación que construye
+        // objetos complejos paso a paso, separando la construcción
+        // de la representación.
+        // User de security ya implementa este patrón en nuestras clases
+        // para usarlo usamos @Builder de lombok
         UserDetails estudiante = User.builder()
                 .username("ana@ies63lastoscas.edu.ar")
                 .password(encoder.encode("user1234"))
